@@ -23,9 +23,9 @@ AShip_base::AShip_base()
 void AShip_base::BeginPlay()
 {
 	Super::BeginPlay();
-	
 }
 
+#if WITH_EDITOR
 void AShip_base::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangeEvent)
 {
 	Super::PostEditChangeProperty(PropertyChangeEvent);
@@ -46,6 +46,8 @@ void AShip_base::PostEditChangeProperty(FPropertyChangedEvent& PropertyChangeEve
 
 	shipCamera->SetRelativeTransform(cameraTransform);
 }
+#endif
+
 // Called every frame
 void AShip_base::Tick(float DeltaTime)
 {
@@ -63,6 +65,22 @@ void AShip_base::MoveShip()
 {
 	movementComponent->Velocity = (ship->GetForwardVector() * Speed);
 }
+
+void AShip_base::Accelerate(float triggerVal)
+{
+	if (triggerVal == 0.0f) {
+		//slowly decelerate
+		Speed -= 2;
+	}
+	else if (triggerVal > 0.75) {
+		//accelerate
+		Speed += triggerVal*10;
+	}
+
+	FMath::Clamp(Speed, MinSpeed, MaxSpeed);
+	//maintain speed
+}
+
 void AShip_base::TurnShip(float controlAxisVal)
 {
 	float roll = ship->GetRelativeRotation().Roll;
