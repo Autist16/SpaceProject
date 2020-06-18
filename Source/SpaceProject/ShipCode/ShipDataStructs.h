@@ -34,11 +34,14 @@ public:
 	EShipType ShipType;
 	UPROPERTY(EditDefaultsOnly)
 	FString ModelName;
+	UPROPERTY(EditAnywhere, BlueprintReadOnly)
+		bool isPlayer;
 
 	FShipGeneral(EShipType type = EShipType::None) {
 		Alliance = EShipAlliance::LONE;
 		ShipType = type;
 		ModelName = "";
+		isPlayer = false;
 	}
 };
 

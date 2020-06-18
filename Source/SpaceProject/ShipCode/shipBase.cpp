@@ -31,6 +31,7 @@ AshipBase::AshipBase()
 void AshipBase::BeginPlay()
 {
 	Super::BeginPlay();
+	shipGeneralData.isPlayer = IsPlayerControlled();
 }
 
 #if WITH_EDITOR

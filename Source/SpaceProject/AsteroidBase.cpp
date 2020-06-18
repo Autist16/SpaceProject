@@ -33,6 +33,7 @@ void AAsteroidBase::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 	//set the random mesh choice
 	if (meshChoices.Num() > 0) {
 		asteroidMeshComponent->SetStaticMesh(GetRandomMesh());
+
 	}
 }
 #endif
@@ -41,7 +42,7 @@ void AAsteroidBase::PostEditChangeProperty(FPropertyChangedEvent& PropertyChange
 void AAsteroidBase::Tick(float DeltaTime)
 {
 	Super::Tick(DeltaTime);
-	RootComponent->AddRelativeRotation(spinVal);
+	asteroidMeshComponent->AddRelativeRotation(spinVal,true);
 }
 
 UStaticMesh* AAsteroidBase::GetRandomMesh()
@@ -49,10 +50,14 @@ UStaticMesh* AAsteroidBase::GetRandomMesh()
 	int maxIdx = meshChoices.Num();
 	int idx;
 	UStaticMesh* selected = nullptr;
+	bool valid = false;
 
-	while (selected != nullptr) {
+	while (!valid) {
 		idx = rand() % maxIdx;
 		selected = meshChoices[idx];
+		if (selected) {
+			valid = true;
+		}
 	}
 
 	return selected;
